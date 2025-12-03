@@ -64,3 +64,15 @@ export interface TimelineEntry {
   type: 'crm_update' | 'meeting' | 'task_completed';
 }
 
+// Interaction/Note types for meeting history
+export interface Interaction {
+  id: string;
+  clientId: string;
+  date: string;
+  type: 'meeting' | 'call' | 'email' | 'note';
+  title: string;
+  notes: string;
+  actionItems?: string[];
+  createdAt: string;
+}
+
