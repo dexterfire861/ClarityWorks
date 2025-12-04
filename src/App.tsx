@@ -977,13 +977,6 @@ ${meetingPrep.relationshipNotes}`;
                 />
               </div>
 
-              {/* JSON Helper */}
-              <div className="bg-gray-50 rounded-lg p-4 text-sm">
-                <p className="font-medium text-gray-700 mb-2">💡 Tip: Ask ChatGPT to generate data</p>
-                <p className="text-gray-600">
-                  You can paste JSON arrays directly. Ask ChatGPT: "Generate sample financial goals and accounts for a client with $X AUM in JSON format"
-                </p>
-              </div>
             </div>
             
             {/* Modal Footer */}
