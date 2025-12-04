@@ -4,6 +4,7 @@ import { getClientInteractions, addInteraction, deleteInteraction, initializeSam
 import { getAllClients, addClient, deleteClient, isCustomClient, createGoal, createAccount } from './clientStorageService';
 import { Client, Interaction, Goal, Account } from './types';
 import { track } from './analytics';
+import { DocumentClientOnboarding } from './DocumentClientOnboarding';
 
 // Utility functions
 const formatCurrency = (amount: number): string => {
@@ -32,6 +33,7 @@ function App() {
     return allClients.length > 0 ? allClients[0].id : '';
   });
   const [showAddClientModal, setShowAddClientModal] = useState(false);
+  const [showDocOnboarding, setShowDocOnboarding] = useState(false);
   
   // New client form state
   const [newClientForm, setNewClientForm] = useState({
@@ -402,6 +404,19 @@ ${meetingPrep.relationshipNotes}`;
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
                   <span className="hidden sm:inline">Add Client</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setShowDocOnboarding(true);
+                    track('doc_onboarding_opened', {});
+                  }}
+                  className="px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2"
+                  title="Add client from documents"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span className="hidden lg:inline">From Docs</span>
                 </button>
                 {selectedClient && isCustomClient(selectedClient.id) && (
                   <button
@@ -1064,6 +1079,19 @@ ${meetingPrep.relationshipNotes}`;
           </div>
         </div>
       )}
+
+      {/* Document Client Onboarding Modal */}
+      <DocumentClientOnboarding
+        isOpen={showDocOnboarding}
+        onClose={() => setShowDocOnboarding(false)}
+        onClientCreated={(client) => {
+          // Add to client storage and refresh list
+          addClient(client);
+          setClients(getAllClients());
+          setSelectedClientId(client.id);
+          track('client_added_from_docs', { clientId: client.id, clientName: client.name });
+        }}
+      />
     </div>
   );
 }

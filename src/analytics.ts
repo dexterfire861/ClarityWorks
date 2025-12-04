@@ -14,7 +14,9 @@ type EventName =
   | 'client_added'
   | 'client_deleted'
   | 'add_client_modal_opened'
-  | 'add_interaction_form_opened';
+  | 'add_interaction_form_opened'
+  | 'doc_onboarding_opened'
+  | 'client_added_from_docs';
 
 interface EventProperties {
   clientId?: string;
